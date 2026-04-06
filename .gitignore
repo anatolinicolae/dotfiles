@@ -1,0 +1,11 @@
+# Backup files created by install.sh
+*.backup
+
+# macOS metadata
+.DS_Store
+
+# Secrets
+.secrets
+
+# Local Claude Code settings
+.claude/
