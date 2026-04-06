@@ -7,6 +7,6 @@ typeset -g POWERLEVEL9K_INSTANT_PROMPT=verbose
 
 # Run configuration wizard if no config has been generated yet.
 # Remove this block after running `p10k configure` once.
-if [[ ! -f ~/.p10k.zsh ]] || [[ $(wc -l < ~/.p10k.zsh) -lt 10 ]]; then
+if [[ ! -f ~/.p10k.zsh ]] || [[ $(wc -l < ~/.p10k.zsh) -lt 50 ]]; then
   echo "Run 'p10k configure' to set up your prompt."
 fi
