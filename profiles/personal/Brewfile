@@ -1,0 +1,40 @@
+# Work machine Brewfile
+# Run `brewup` to install/update and regenerate the lock file, then commit it.
+
+# Formulae
+brew "aria2"
+brew "bun"
+brew "curl"
+brew "ffmpeg"
+brew "fzf"
+brew "git"
+brew "htop"
+brew "jq"
+brew "mas"
+brew "nvm"
+brew "ripgrep"
+brew "terraform"
+brew "tmux"
+brew "uv"
+brew "wget"
+brew "yarn"
+brew "zsh"
+
+# Casks
+cask "arc"
+cask "claude"
+cask "claude-code"
+cask "ghostty"
+cask "google-chrome"
+cask "lulu"
+cask "numi"
+cask "shottr"
+cask "slack"
+cask "sublime-text"
+cask "telegram"
+cask "tower"
+cask "visual-studio-code"
+
+# Personal-specific additions
+# brew "..."
+# cask "..."
