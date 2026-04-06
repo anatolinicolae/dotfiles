@@ -1,0 +1,19 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Editors
+.vscode/
+*.swp
+*.swo
+*~
+.idea/
+
+# Build artifacts
+*.o
+*.pyc
+__pycache__/
+node_modules/
+.env

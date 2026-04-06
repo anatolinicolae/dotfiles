@@ -1,0 +1,19 @@
+[include]
+  path = ~/.gitconfig.local
+
+[core]
+  excludesfile = ~/.gitignore_global
+  autocrlf = input
+  editor = vim
+
+[pull]
+  rebase = true
+
+[init]
+  defaultBranch = main
+
+[alias]
+  st = status
+  co = checkout
+  br = branch
+  lg = log --oneline --graph --decorate
