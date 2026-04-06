@@ -1,4 +1,4 @@
-# Work machine Brewfile
+# Personal machine Brewfile
 # Run `brewup` to install/update and regenerate the lock file, then commit it.
 
 # Formulae
