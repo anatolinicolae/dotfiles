@@ -2,7 +2,6 @@
 # Run `brewup` to install/update and regenerate the lock file, then commit it.
 
 # Taps
-tap "browsers-software/tap"
 tap "cloudflare/cloudflare"
 
 # Formulae
@@ -42,7 +41,6 @@ cask "audacity"
 cask "authy"
 cask "balenaetcher"
 cask "blender"
-cask "browsers-software/tap/browsers"
 cask "bruno"
 cask "charles"
 cask "claude"
