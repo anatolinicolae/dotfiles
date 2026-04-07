@@ -22,6 +22,7 @@ brew "zsh"
 
 # Casks
 cask "arc"
+cask "google-cloud-sdk"
 cask "claude"
 cask "claude-code"
 cask "ghostty"
