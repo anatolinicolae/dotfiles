@@ -21,7 +21,7 @@ brew "yarn"
 # Casks
 cask "aldente"
 cask "arc"
-cask "claude-code"
+cask "claude-code@latest"
 cask "copilot-cli"
 cask "bartender"
 cask "bruno"
