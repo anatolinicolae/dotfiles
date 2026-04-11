@@ -348,3 +348,28 @@ function ffmpegjoin() {
     ffmpeg -f concat -i "$PART.txt" -c copy "$ROOTDIR-$PART.mp4" && rm "$PART.txt"
   done
 }
+
+# Enable a Claude Code plugin for current project
+# Usage: claude-plugin <plugin>  (e.g. claude-plugin serena@claude-plugins-official)
+function claude-plugin() {
+  if [[ -z "$1" ]]; then
+    echo "Usage: claude-plugin <plugin>"
+    return 1
+  fi
+
+  local settings=".claude/settings.local.json"
+
+  mkdir -p .claude
+  [[ ! -f "$settings" ]] && echo '{}' > "$settings"
+
+  local merged
+  merged=$(jq --arg k "$1" '.enabledPlugins[$k] = true' "$settings") || return 1
+  printf '%s\n' "$merged" > "$settings"
+  echo "Enabled $1"
+}
+
+# Enable serena + context7 for current project
+function claude-setup() {
+  claude-plugin serena@claude-plugins-official
+  claude-plugin context7@claude-plugins-official
+}
