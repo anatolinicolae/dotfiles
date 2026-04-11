@@ -7,6 +7,7 @@ macOS dotfiles for `work` and `personal` machines. Manages shell config, Git con
 ```
 dotfiles/
 ├── install.sh              # Bootstrap script — run this on a new machine
+├── .secrets.example        # Template for ~/.secrets (API keys, tokens)
 ├── profiles/
 │   ├── personal/Brewfile   # Personal machine packages
 │   └── work/Brewfile       # Work machine packages
@@ -16,7 +17,7 @@ dotfiles/
 │   └── conf.d/
 │       ├── aliases.zsh
 │       ├── exports.zsh     # PATH exports (nvm, gcloud, etc.)
-│       └── functions.zsh
+│       └── functions.zsh   # Shell utilities + Claude Code helpers
 ├── git/
 │   ├── .gitconfig          # Shared config; includes ~/.gitconfig.local
 │   └── .gitignore_global
@@ -58,9 +59,19 @@ This runs `brew bundle --upgrade` against the active profile's Brewfile. Commit 
 | `~/.secrets` | API keys, tokens — sourced by `.zshrc`, never committed |
 | `~/.zshrc.local` | Shell overrides specific to this machine |
 | `~/.gitconfig.local` | Git user name and email |
+| `~/.dotfiles_profile` | Active profile (`work` or `personal`) — set by `install.sh` |
 
 ## Profiles
 
 Profiles live in `profiles/<name>/Brewfile`. The active profile is saved to `~/.dotfiles_profile` by `install.sh` and picked up automatically by `.zshenv` and the `brewup` alias.
 
 To add packages, edit the relevant Brewfile and run `brewup`.
+
+## Claude Code
+
+`functions.zsh` includes helpers for Claude Code MCP plugin management:
+
+```bash
+claude-plugin <name>   # enable an MCP plugin in .claude/settings.local.json
+claude-setup           # enable serena + context7 for the current project
+```
