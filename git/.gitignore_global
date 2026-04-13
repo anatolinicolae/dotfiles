@@ -17,3 +17,10 @@
 __pycache__/
 node_modules/
 .env
+
+# Claude Code
+.claude/skills/generated/
+.claude/skills/gitnexus/
+.gitnexus
+CLAUDE.local.md
+.claude/settings.local.json
