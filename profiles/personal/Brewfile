@@ -1,14 +1,11 @@
 # Personal machine Brewfile
 # Run `brewup` to install/update and regenerate the lock file, then commit it.
 
-# Taps
-tap "cloudflare/cloudflare"
-
 # Formulae
 brew "act"
 brew "aria2"
 brew "bun"
-brew "cloudflare/cloudflare/cloudflared"
+brew "composer"
 brew "curl"
 brew "f3"
 brew "ffmpeg"
@@ -21,6 +18,7 @@ brew "jq"
 brew "k6"
 brew "mas"
 brew "mise"
+brew "php@8.5"
 brew "ripgrep"
 brew "rtk"
 brew "sshpass"
