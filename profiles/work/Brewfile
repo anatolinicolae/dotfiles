@@ -3,6 +3,7 @@
 
 # Formulae
 brew "aria2"
+brew "buf"
 brew "bun"
 brew "composer"
 brew "git-town"
