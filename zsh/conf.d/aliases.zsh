@@ -1,7 +1,7 @@
 # Update Homebrew packages for this machine's profile.
 # $DOTFILES and $DOTFILES_PROFILE are set in .zshenv before .zshrc runs.
-# Steps: update index → install missing → upgrade outdated → cleanup unlisted
-alias brewup='brew update && brew bundle --file="$DOTFILES/profiles/$DOTFILES_PROFILE/Brewfile" --jobs=auto && brew upgrade --greedy-auto-updates && brew bundle cleanup --file="$DOTFILES/profiles/$DOTFILES_PROFILE/Brewfile" --force'
+# Steps: upgrade Brewfile deps (runs brew update internally) → upgrade auto-updating casks → cleanup unlisted
+alias brewup='brew bundle upgrade --file="$DOTFILES/profiles/$DOTFILES_PROFILE/Brewfile" --jobs=auto && brew upgrade --greedy-auto-updates && brew bundle cleanup --file="$DOTFILES/profiles/$DOTFILES_PROFILE/Brewfile" --force'
 
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."
