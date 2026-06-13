@@ -27,6 +27,7 @@ for f in "$DOTFILES/zsh/conf.d"/*.zsh; do
   [[ -f "$f" ]] && source "$f"
 done
 
-# Machine-local overrides (outside repo, never committed)
+# Machine-local overrides (outside repo, never committed).
+# Herd injects PHP binary/config vars here after updates — move them to ~/.zshrc.local.
 [[ -f ~/.secrets ]] && source ~/.secrets
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
