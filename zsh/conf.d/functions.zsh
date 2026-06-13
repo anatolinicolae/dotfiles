@@ -331,6 +331,19 @@ function zstdx() {
     gtar -xaf "$SOURCE"
 }
 
+# Add silence to start + end of an audio track, in-place
+# Usage: audiopad <file> [seconds]   (default 2s; integer seconds)
+# Lossless (flac/wav) is bit-exact; lossy (mp3/aac) re-encodes once.
+function audiopad() {
+  local f="$1" s="${2:-2}"
+  [ -f "$f" ] || { echo "audiopad: no such file: $f" >&2; return 1; }
+  local tmp="${f%.*}.padtmp.${f##*.}"
+  ffmpeg -hide_banner -loglevel error -i "$f" \
+    -af "adelay=${s}000:all=1,apad=pad_dur=$s" "$tmp" \
+    && mv -f "$tmp" "$f" \
+    && echo "padded ${s}s ↔ $f"
+}
+
 function ffmpegjoin() {
   ROOTDIR=$(pwd | basename)
 
