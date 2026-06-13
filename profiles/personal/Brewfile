@@ -1,6 +1,9 @@
 # Personal machine Brewfile
 # Run `brewup` to install/update and regenerate the lock file, then commit it.
 
+# Taps
+tap "patchark/casks", "https://github.com/patchark/homebrew-casks"
+
 # Formulae
 brew "act"
 brew "aria2"
@@ -10,6 +13,7 @@ brew "curl"
 brew "f3"
 brew "ffmpeg"
 brew "fzf"
+brew "gh"
 brew "git"
 brew "htop"
 brew "imagemagick"
@@ -17,6 +21,7 @@ brew "jq"
 brew "k6"
 brew "mas"
 brew "mise"
+brew "anomalyco/tap/opencode"
 brew "php@8.5"
 brew "ripgrep"
 brew "rtk"
@@ -27,6 +32,7 @@ brew "opentofu"
 brew "terraform"
 brew "tmux"
 brew "wget"
+brew "yamllint"
 brew "zellij"
 
 # Casks
@@ -61,18 +67,18 @@ cask "gpg-suite"
 cask "herd"
 cask "hex-fiend"
 cask "imageoptim"
+cask "insta360-studio"
 cask "istat-menus"
 cask "iterm2"
 cask "jetbrains-toolbox"
 cask "keystore-explorer"
-cask "logitune"
 cask "loom"
-cask "loopback"
 cask "lulu"
 cask "meld-studio"
 cask "minecraft"
 cask "notion"
 cask "numi"
+cask "openlogi"
 cask "orbstack"
 cask "poedit"
 cask "postman"
@@ -80,7 +86,6 @@ cask "pritunl"
 cask "qflipper"
 cask "rapidapi"
 cask "raycast"
-cask "rekordbox"
 cask "setapp"
 cask "shottr"
 cask "sidenotes"
@@ -93,7 +98,6 @@ cask "sublime-text"
 cask "telegram"
 cask "tidal"
 cask "tower"
-cask "transmit"
 cask "visual-studio-code"
 cask "vlc"
 cask "zed"
@@ -109,6 +113,39 @@ mas "Xcode", id: 497799835
 mas "Termius", id: 1176074088
 mas "Patterns", id: 429449079
 mas "The Unarchiver", id: 425424353
+mas "Apple Configurator", id: 1037126344
+mas "djay - DJ App & AI Mixer", id: 450527929
+mas "GarageBuy", id: 402415186
+mas "Home Assistant", id: 1099568401
+mas "Hotspot Shield VPN—Wifi Proxy", id: 771076721
+mas "Keynote: Design Presentations", id: 361285480
+mas "Microsoft PowerPoint", id: 462062816
+mas "Microsoft Word", id: 462054704
+mas "Numbers: Make Spreadsheets", id: 361304891
+mas "Okta Verify", id: 490179405
+mas "Pages: Create Documents", id: 361309726
+mas "Pixelmator Pro", id: 1289583905
+mas "Shazam: Identify Songs", id: 897118787
+mas "SiteSucker", id: 442168834
+mas "SnippetsLab", id: 1006087419
+mas "Tailscale", id: 1475387142
+mas "TestFlight", id: 899247664
+mas "TONALY: Songs, Scales & Theory", id: 1242467844
+mas "xLights", id: 1137297689
+mas "Zight Screen Recorder", id: 417602904
+
+# Patched apps (patchark/casks tap)
+# Requires HOMEBREW_GITHUB_API_TOKEN (classic PAT, repo scope) in ~/.secrets
+# to download assets from the private release repos.
+cask "patchark/casks/audio-hijack"
+cask "patchark/casks/cleanshot-x"
+cask "patchark/casks/kaleidoscope"
+cask "patchark/casks/loopback"
+cask "patchark/casks/rekordbox"
+cask "patchark/casks/screen-studio"
+cask "patchark/casks/soundsource"
+cask "patchark/casks/transmit"
+cask "patchark/casks/wirecast"
 
 # Personal-specific additions
 # brew "..."

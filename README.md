@@ -67,6 +67,21 @@ Profiles live in `profiles/<name>/Brewfile`. The active profile is saved to `~/.
 
 To add packages, edit the relevant Brewfile and run `brewup`.
 
+### Patched apps (personal profile)
+
+The personal profile installs patched apps from the private `patchark/casks` tap. These casks are tap-prefixed (`patchark/casks/<app>`) so they don't clash with upstream Homebrew casks.
+
+Downloading them requires a GitHub token with access to the private release repos:
+
+1. Create a **classic PAT** with `repo` scope at https://github.com/settings/tokens/new
+2. Add it to `~/.secrets`:
+   ```bash
+   export HOMEBREW_GITHUB_API_TOKEN=ghp_yourtoken
+   ```
+3. Open a new terminal (so `~/.secrets` is sourced), then run `brewup`.
+
+Without the token, `brew bundle` will fail when it reaches the patchark casks.
+
 ## Claude Code
 
 `functions.zsh` includes helpers for Claude Code MCP plugin management:

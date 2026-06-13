@@ -35,6 +35,7 @@ profiles/
 - **nvm sourced manually** — OMZ nvm plugin skipped; Homebrew installs to non-standard path
 - **Local files never committed** — `~/.secrets`, `~/.zshrc.local`, `~/.gitconfig.local`, `~/.dotfiles_profile`
 - **Brewfile.lock.json committed** — tracks exact versions per profile
+- **patchark/casks tap (personal)** — patched apps from a private tap. Casks are tap-prefixed (`patchark/casks/<app>`) to avoid clashing with upstream homebrew-cask. Needs `HOMEBREW_GITHUB_API_TOKEN` (classic PAT, repo scope) in `~/.secrets` to download private release assets; without it `brew bundle` fails on those casks.
 
 ## Working With This Repo
 
