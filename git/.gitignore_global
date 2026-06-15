@@ -24,3 +24,7 @@ node_modules/
 .gitnexus
 CLAUDE.local.md
 .claude/settings.local.json
+.serena
+
+.intelephense/
+.claude/worktrees/
