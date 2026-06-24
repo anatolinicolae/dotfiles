@@ -44,9 +44,6 @@ cask "jetbrains-toolbox"
 cask "orbstack"
 cask "rapidapi"
 cask "raycast"
-cask "patchark/casks/cleanshot-x"
-cask "patchark/casks/kaleidoscope"
-cask "patchark/casks/screen-studio"
 cask "sidenotes"
 cask "sublime-text"
 cask "tableplus"
@@ -63,6 +60,14 @@ cask "zen"
 mas "Bitwarden", id: 1352778147
 mas "Patterns", id: 429449079
 mas "Xcode", id: 497799835
+
+# Patched apps (patchark/casks tap)
+# Requires HOMEBREW_GITHUB_API_TOKEN (classic PAT, repo scope) in ~/.secrets
+# to download assets from the private release repos.
+cask "patchark/casks/cleanshot-x"
+cask "patchark/casks/kaleidoscope"
+cask "patchark/casks/screen-studio"
+cask "patchark/casks/soundsource"
 
 # Work-specific additions
 # brew "..."
