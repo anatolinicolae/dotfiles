@@ -3,6 +3,7 @@
 
 # Taps
 tap "patchark/casks", "https://github.com/patchark/homebrew-casks"
+tap "Kilo-Org/tap", "https://github.com/Kilo-Org/homebrew-tap"
 
 # Formulae
 brew "act"
@@ -20,6 +21,7 @@ brew "htop"
 brew "imagemagick"
 brew "jq"
 brew "k6"
+brew "Kilo-Org/tap/kilo"
 brew "mas"
 brew "mise"
 brew "anomalyco/tap/opencode"
