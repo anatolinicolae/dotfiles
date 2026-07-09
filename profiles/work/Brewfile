@@ -9,6 +9,7 @@ brew "aria2"
 brew "buf"
 brew "oven-sh/bun/bun", trusted: true
 brew "composer"
+brew "dnsmasq"
 brew "gh"
 brew "glab"
 brew "git-town"
