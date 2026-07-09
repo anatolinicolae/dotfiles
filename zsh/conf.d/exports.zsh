@@ -1,5 +1,9 @@
 # NOTE: Homebrew is already in PATH via .zshenv — do not repeat eval here.
 
+# Automatic post-install cleanup (runs on every install/upgrade/reinstall)
+# purges cached downloads older than this many days instead of the 120-day default.
+export HOMEBREW_CLEANUP_MAX_AGE_DAYS=14
+
 # nvm — Homebrew installs to /opt/homebrew/opt/nvm/, NOT ~/.nvm/
 # The OMZ nvm plugin expects ~/.nvm/nvm.sh and silently fails with Homebrew nvm.
 # Source from Homebrew prefix directly instead.
