@@ -398,7 +398,8 @@ function claude-setup() {
 # tap-qualified `brew`/`cask` entry with no `tap` line (e.g. Kilo-Org/tap/kilo,
 # anomalyco/tap/opencode) trusts only that formula/cask, not its whole tap.
 # Steps: trust → upgrade Brewfile deps (runs brew update internally) →
-# upgrade auto-updating casks → cleanup unlisted
+# upgrade auto-updating casks → cleanup unlisted packages → sweep the whole
+# download cache (bundle/upgrade only auto-clean the formulae they touch)
 function brewup() {
   local brewfile="$DOTFILES/profiles/$DOTFILES_PROFILE/Brewfile"
   awk -F'"' '
@@ -410,5 +411,6 @@ function brewup() {
   done
   brew bundle upgrade --file="$brewfile" --jobs=auto --force \
     && brew upgrade --greedy-auto-updates \
-    && brew bundle cleanup --file="$brewfile" --force
+    && brew bundle cleanup --file="$brewfile" --force \
+    && brew cleanup
 }
