@@ -390,19 +390,24 @@ function claude-setup() {
 # Update Homebrew packages for this machine's profile.
 # $DOTFILES and $DOTFILES_PROFILE are set in .zshenv before .zshrc runs.
 # Non-official taps (e.g. patchark/casks) need `brew trust` or bundle refuses
-# to load them — including taps implied by a tap-qualified formula/cask like
-# "vendor/tap/name" with no explicit `tap` line (e.g. Kilo-Org/tap, anomalyco/tap).
-# trust.json isn't a dotfile we symlink, so it doesn't survive a fresh
-# machine/profile reset — re-trust every tap found in the Brewfile here
-# instead of maintaining a separate whitelist; it's a no-op once already trusted.
-# Steps: trust taps → upgrade Brewfile deps (runs brew update internally) →
+# to load them. trust.json isn't a dotfile we symlink, so it doesn't survive
+# a fresh machine/profile reset — re-declare trust from the Brewfile here
+# instead of maintaining a separate whitelist file; it's a no-op once already
+# trusted. Granularity mirrors the Brewfile itself: an explicit `tap` line
+# trusts the whole tap (e.g. patchark/casks, used for many casks); a bare
+# tap-qualified `brew`/`cask` entry with no `tap` line (e.g. Kilo-Org/tap/kilo,
+# anomalyco/tap/opencode) trusts only that formula/cask, not its whole tap.
+# Steps: trust → upgrade Brewfile deps (runs brew update internally) →
 # upgrade auto-updating casks → cleanup unlisted
 function brewup() {
   local brewfile="$DOTFILES/profiles/$DOTFILES_PROFILE/Brewfile"
-  awk -F'"' '/^(tap|brew|cask) /{n=split($2,p,"/"); if (n>=2) print p[1]"/"p[2]}' "$brewfile" \
-    | sort -u | while read -r tap; do
-      brew trust --tap "$tap"
-    done
+  awk -F'"' '
+    /^tap /                        { print "tap", $2 }
+    /^brew "[^"]+\/[^"]+\/[^"]+"/  { print "formula", $2 }
+    /^cask "[^"]+\/[^"]+\/[^"]+"/  { print "cask", $2 }
+  ' "$brewfile" | sort -u | while read -r type name; do
+    brew trust --"$type" "$name"
+  done
   brew bundle upgrade --file="$brewfile" --jobs=auto --force \
     && brew upgrade --greedy-auto-updates \
     && brew bundle cleanup --file="$brewfile" --force
