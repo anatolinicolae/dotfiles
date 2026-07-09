@@ -3,11 +3,12 @@
 
 # Taps
 tap "patchark/casks", "https://github.com/patchark/homebrew-casks", trusted: true
+tap "kilo-org/tap", "https://github.com/Kilo-Org/homebrew-tap"
 
 # Formulae
 brew "aria2"
 brew "buf"
-brew "bun"
+brew "oven-sh/bun/bun", trusted: true
 brew "composer"
 brew "gh"
 brew "glab"
@@ -15,8 +16,10 @@ brew "git-town"
 brew "htop"
 brew "jq"
 brew "k6"
+brew "kilo-org/tap/kilo", trusted: true
 brew "mas"
 brew "mise"
+brew "anomalyco/tap/opencode", trusted: true
 brew "php@8.5"
 brew "rtk"
 brew "swaks"
