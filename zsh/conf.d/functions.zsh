@@ -390,16 +390,19 @@ function claude-setup() {
 # Update Homebrew packages for this machine's profile.
 # $DOTFILES and $DOTFILES_PROFILE are set in .zshenv before .zshrc runs.
 # Non-official taps (e.g. patchark/casks) need `brew trust` or bundle refuses
-# to load them. trust.json isn't a dotfile we symlink, so it doesn't survive
-# a fresh machine/profile reset — re-trust every tap in the Brewfile here
+# to load them — including taps implied by a tap-qualified formula/cask like
+# "vendor/tap/name" with no explicit `tap` line (e.g. Kilo-Org/tap, anomalyco/tap).
+# trust.json isn't a dotfile we symlink, so it doesn't survive a fresh
+# machine/profile reset — re-trust every tap found in the Brewfile here
 # instead of maintaining a separate whitelist; it's a no-op once already trusted.
 # Steps: trust taps → upgrade Brewfile deps (runs brew update internally) →
 # upgrade auto-updating casks → cleanup unlisted
 function brewup() {
   local brewfile="$DOTFILES/profiles/$DOTFILES_PROFILE/Brewfile"
-  awk -F'"' '/^tap /{print $2}' "$brewfile" | while read -r tap; do
-    brew trust --tap "$tap"
-  done
+  awk -F'"' '/^(tap|brew|cask) /{n=split($2,p,"/"); if (n>=2) print p[1]"/"p[2]}' "$brewfile" \
+    | sort -u | while read -r tap; do
+      brew trust --tap "$tap"
+    done
   brew bundle upgrade --file="$brewfile" --jobs=auto --force \
     && brew upgrade --greedy-auto-updates \
     && brew bundle cleanup --file="$brewfile" --force
