@@ -3,7 +3,6 @@
 
 # Taps
 tap "patchark/casks", "https://github.com/patchark/homebrew-casks", trusted: true
-tap "kilo-org/tap", "https://github.com/Kilo-Org/homebrew-tap"
 
 # Formulae
 brew "aria2"
