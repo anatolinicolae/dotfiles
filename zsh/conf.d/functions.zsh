@@ -391,13 +391,19 @@ function claude-setup() {
 # $DOTFILES and $DOTFILES_PROFILE are set in .zshenv before .zshrc runs.
 # Non-official taps/formulae/casks are trusted declaratively in the Brewfile
 # itself via `trusted: true` (see patchark/casks, kilo-org/tap/kilo,
-# anomalyco/tap/opencode, oven-sh/bun/bun) — `brew bundle` applies that before
-# fetching and re-derives the trust store from it on every cleanup, so it
-# survives a fresh machine/profile reset with no imperative `brew trust` step
-# needed here.
+# anomalyco/tap/opencode) — `brew bundle` applies that before fetching and
+# re-derives the trust store from it on every cleanup, so it survives a
+# fresh machine/profile reset with no imperative `brew trust` step needed
+# here.
 # Steps: upgrade Brewfile deps (runs brew update internally) → upgrade
 # auto-updating casks → cleanup unlisted packages → sweep the whole download
 # cache (bundle/upgrade only auto-clean the formulae they touch)
+#
+# Before this runs `cleanup --force`, sanity-check with a dry run:
+#   brew bundle cleanup --file="$DOTFILES/profiles/$DOTFILES_PROFILE/Brewfile"
+# (no --force = report only). If it lists a formula you actually use, the
+# Brewfile entry's name/tap doesn't match what's installed — fix the entry,
+# don't force through it.
 function brewup() {
   local brewfile="$DOTFILES/profiles/$DOTFILES_PROFILE/Brewfile"
   brew bundle upgrade --file="$brewfile" --jobs=auto --force \

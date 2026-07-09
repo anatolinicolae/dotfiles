@@ -7,7 +7,7 @@ tap "patchark/casks", "https://github.com/patchark/homebrew-casks", trusted: tru
 # Formulae
 brew "act"
 brew "aria2"
-brew "oven-sh/bun/bun", trusted: true
+brew "bun"
 brew "composer"
 brew "curl"
 brew "f3"
