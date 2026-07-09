@@ -394,18 +394,19 @@ function claude-setup() {
 # a fresh machine/profile reset — re-declare trust from the Brewfile here
 # instead of maintaining a separate whitelist file; it's a no-op once already
 # trusted. Granularity mirrors the Brewfile itself: an explicit `tap` line
-# trusts the whole tap (e.g. patchark/casks, used for many casks); a bare
-# tap-qualified `brew`/`cask` entry with no `tap` line (e.g. Kilo-Org/tap/kilo,
-# anomalyco/tap/opencode) trusts only that formula/cask, not its whole tap.
+# trusts the whole tap (e.g. patchark/casks, used for many casks — no need
+# to also trust its individual casks); a tap-qualified `brew`/`cask` entry
+# whose tap has no `tap` line (e.g. Kilo-Org/tap/kilo, anomalyco/tap/opencode)
+# trusts only that formula/cask, not its whole tap.
 # Steps: trust → upgrade Brewfile deps (runs brew update internally) →
 # upgrade auto-updating casks → cleanup unlisted packages → sweep the whole
 # download cache (bundle/upgrade only auto-clean the formulae they touch)
 function brewup() {
   local brewfile="$DOTFILES/profiles/$DOTFILES_PROFILE/Brewfile"
   awk -F'"' '
-    /^tap /                        { print "tap", $2 }
-    /^brew "[^"]+\/[^"]+\/[^"]+"/  { print "formula", $2 }
-    /^cask "[^"]+\/[^"]+\/[^"]+"/  { print "cask", $2 }
+    /^tap /                        { print "tap", $2; taps[$2]=1; next }
+    /^brew "[^"]+\/[^"]+\/[^"]+"/  { split($2,p,"/"); if (!(p[1]"/"p[2] in taps)) print "formula", $2 }
+    /^cask "[^"]+\/[^"]+\/[^"]+"/  { split($2,p,"/"); if (!(p[1]"/"p[2] in taps)) print "cask", $2 }
   ' "$brewfile" | sort -u | while read -r type name; do
     brew trust --"$type" "$name"
   done
