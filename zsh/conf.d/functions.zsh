@@ -386,3 +386,21 @@ function claude-setup() {
   claude-plugin serena@claude-plugins-official
   claude-plugin context7@claude-plugins-official
 }
+
+# Update Homebrew packages for this machine's profile.
+# $DOTFILES and $DOTFILES_PROFILE are set in .zshenv before .zshrc runs.
+# Non-official taps (e.g. patchark/casks) need `brew trust` or bundle refuses
+# to load them. trust.json isn't a dotfile we symlink, so it doesn't survive
+# a fresh machine/profile reset — re-trust every tap in the Brewfile here
+# instead of maintaining a separate whitelist; it's a no-op once already trusted.
+# Steps: trust taps → upgrade Brewfile deps (runs brew update internally) →
+# upgrade auto-updating casks → cleanup unlisted
+function brewup() {
+  local brewfile="$DOTFILES/profiles/$DOTFILES_PROFILE/Brewfile"
+  awk -F'"' '/^tap /{print $2}' "$brewfile" | while read -r tap; do
+    brew trust --tap "$tap"
+  done
+  brew bundle upgrade --file="$brewfile" --jobs=auto --force \
+    && brew upgrade --greedy-auto-updates \
+    && brew bundle cleanup --file="$brewfile" --force
+}
