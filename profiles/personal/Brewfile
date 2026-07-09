@@ -2,13 +2,13 @@
 # Run `brewup` to install/update and regenerate the lock file, then commit it.
 
 # Taps
-tap "patchark/casks", "https://github.com/patchark/homebrew-casks"
-tap "Kilo-Org/tap", "https://github.com/Kilo-Org/homebrew-tap"
+tap "patchark/casks", "https://github.com/patchark/homebrew-casks", trusted: true
+tap "kilo-org/tap", "https://github.com/Kilo-Org/homebrew-tap"
 
 # Formulae
 brew "act"
 brew "aria2"
-brew "bun"
+brew "oven-sh/bun/bun", trusted: true
 brew "composer"
 brew "curl"
 brew "f3"
@@ -21,10 +21,10 @@ brew "htop"
 brew "imagemagick"
 brew "jq"
 brew "k6"
-brew "Kilo-Org/tap/kilo"
+brew "kilo-org/tap/kilo", trusted: true
 brew "mas"
 brew "mise"
-brew "anomalyco/tap/opencode"
+brew "anomalyco/tap/opencode", trusted: true
 brew "php@8.5"
 brew "ripgrep"
 brew "rtk"

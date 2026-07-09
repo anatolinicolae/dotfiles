@@ -2,7 +2,7 @@
 # Run `brewup` to install/update and regenerate the lock file, then commit it.
 
 # Taps
-tap "patchark/casks", "https://github.com/patchark/homebrew-casks"
+tap "patchark/casks", "https://github.com/patchark/homebrew-casks", trusted: true
 
 # Formulae
 brew "aria2"
