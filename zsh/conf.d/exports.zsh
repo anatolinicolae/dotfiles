@@ -12,6 +12,13 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \
   source "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
 
+# mise — runtime version manager. `mise activate zsh` prepends its shim dir to
+# PATH so it takes precedence over nvm/bun at lookup time regardless of source
+# order; for tools mise doesn't manage, the shim falls through untouched.
+if command -v mise >/dev/null 2>&1; then
+  eval "$(mise activate zsh)"
+fi
+
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
