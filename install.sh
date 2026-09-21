@@ -17,9 +17,9 @@ echo "==> Homebrew ready"
 
 # ── 2. Profile selection ───────────────────────────────────────────────────────
 while true; do
-  read -rp "==> Profile [work/personal]: " PROFILE
-  [[ "$PROFILE" == "work" || "$PROFILE" == "personal" ]] && break
-  echo "    Enter 'work' or 'personal'"
+  read -rp "==> Profile [work/personal/agent]: " PROFILE
+  [[ "$PROFILE" == "work" || "$PROFILE" == "personal" || "$PROFILE" == "agent" ]] && break
+  echo "    Enter 'work', 'personal' or 'agent'"
 done
 
 # ── 3. Persist profile ─────────────────────────────────────────────────────────

@@ -10,6 +10,7 @@ dotfiles/
 ├── .secrets.example        # Template for ~/.secrets (API keys, tokens)
 ├── profiles/
 │   ├── personal/Brewfile   # Personal machine packages
+│   ├── agent/Brewfile      # Agent machine packages
 │   └── work/Brewfile       # Work machine packages
 ├── zsh/
 │   ├── .zshenv             # Sets $DOTFILES, $DOTFILES_PROFILE, Homebrew PATH
@@ -35,7 +36,7 @@ bash ~/dotfiles/install.sh
 The installer will:
 
 1. Install Homebrew if missing
-2. Ask for a profile (`work` or `personal`)
+2. Ask for a profile (`work`, `personal`, or `agent`)
 3. Run `brew bundle` for that profile's Brewfile
 4. Install Oh My Zsh, Powerlevel10k, and zsh plugins
 5. Symlink dotfiles from `zsh/`, `git/`, and `powerlevel10k/` into `$HOME`
@@ -59,7 +60,7 @@ This runs `brew bundle --upgrade` against the active profile's Brewfile. Commit 
 | `~/.secrets` | API keys, tokens — sourced by `.zshrc`, never committed |
 | `~/.zshrc.local` | Shell overrides specific to this machine |
 | `~/.gitconfig.local` | Git user name and email |
-| `~/.dotfiles_profile` | Active profile (`work` or `personal`) — set by `install.sh` |
+| `~/.dotfiles_profile` | Active profile (`work`, `personal`, or `agent`) — set by `install.sh` |
 
 ## Profiles
 

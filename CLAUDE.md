@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-macOS dotfiles repo — Zsh, Git, Homebrew, dev tools across `work` and `personal` profiles.
+macOS dotfiles repo — Zsh, Git, Homebrew, dev tools across `work`, `personal`, and `agent` profiles.
 
 ## Setup
 
@@ -27,6 +27,7 @@ powerlevel10k/
 profiles/
   work/Brewfile       # work machine packages
   personal/Brewfile   # personal machine packages
+  agent/Brewfile      # agent machine packages
 ```
 
 ## Design Notes
