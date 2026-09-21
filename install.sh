@@ -28,8 +28,12 @@ echo "==> Profile '$PROFILE' saved to ~/.dotfiles_profile"
 
 # ── 4. Homebrew packages ───────────────────────────────────────────────────────
 echo "==> Installing packages from profiles/$PROFILE/Brewfile..."
-brew bundle --file="$DOTFILES/profiles/$PROFILE/Brewfile"
-echo "==> Packages installed. Commit profiles/$PROFILE/Brewfile.lock.json if updated."
+if brew bundle --file="$DOTFILES/profiles/$PROFILE/Brewfile"; then
+  echo "==> Packages installed. Commit profiles/$PROFILE/Brewfile.lock.json if updated."
+else
+  echo "==> Some packages failed to install; continuing setup."
+  echo "    Re-run 'brewup' after setup."
+fi
 
 # ── 5. Oh My Zsh ───────────────────────────────────────────────────────────────
 if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
