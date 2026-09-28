@@ -7,4 +7,4 @@ export DOTFILES="${${(%):-%N}:A:h:h}"
 [[ -f ~/.dotfiles_profile ]] && source ~/.dotfiles_profile
 
 # Homebrew — needed in PATH for all shell types including non-interactive
-eval "$(/opt/homebrew/bin/brew shellenv)"
+eval "$(cd "$HOME" && /opt/homebrew/bin/brew shellenv)"
