@@ -406,7 +406,7 @@ function claude-setup() {
 # don't force through it.
 function brewup() {
   local brewfile="$DOTFILES/profiles/$DOTFILES_PROFILE/Brewfile"
-  brew bundle upgrade --file="$brewfile" --jobs=auto --force \
+  brew bundle upgrade --file="$brewfile" --force \
     && brew upgrade --greedy-auto-updates \
     && brew bundle cleanup --file="$brewfile" --force \
     && brew cleanup
