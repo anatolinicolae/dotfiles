@@ -100,9 +100,7 @@ function gitio() {
 function server() {
   local port="${1:-8000}";
   sleep 1 && open "http://localhost:${port}/" &
-  # Set the default Content-Type to `text/plain` instead of `application/octet-stream`
-  # And serve everything as UTF-8 (although not technically correct, this doesn’t break anything for binary files)
-  python -c $'import SimpleHTTPServer;\nmap = SimpleHTTPServer.SimpleHTTPRequestHandler.extensions_map;\nmap[""] = "text/plain";\nfor key, value in map.items():\n\tmap[key] = value + ";charset=UTF-8";\nSimpleHTTPServer.test();' "$port";
+  python3 -m http.server "$port";
 }
 
 # Start a PHP server from a directory, optionally specifying the port
@@ -228,8 +226,8 @@ function tre() {
 }
 
 function set_proxy() {
-  export http_proxy=´http://$1:$2´
-  export https_proxy=´https://$1:$2´
+  export http_proxy="http://$1:$2"
+  export https_proxy="https://$1:$2"
 }
 
 # Search all directory files for a string
@@ -345,20 +343,21 @@ function audiopad() {
 }
 
 function ffmpegjoin() {
-  ROOTDIR=$(pwd | basename)
+  local ROOTDIR="${PWD:t}" PART f
+  local -a files
 
-  PARTS=("front" "back" "left_repeater" "right_repeater")
-
-  for PART in "${PARTS[@]}"
+  for PART in front back left_repeater right_repeater
   do
-    [ -e "$PART.txt" ] && rm "$PART.txt"
+    files=(*-"$PART".mp4(N))
+    (( ${#files} )) || continue
 
-    for f in *-"$PART".mp4
+    for f in "${files[@]}"
     do
-      echo "file $f" >> "$PART.txt"
-    done
+      print -r -- "file ${(q)f}"
+    done > "$PART.txt"
 
-    ffmpeg -f concat -i "$PART.txt" -c copy "$ROOTDIR-$PART.mp4" && rm "$PART.txt"
+    ffmpeg -f concat -safe 0 -i "$PART.txt" -c copy "$ROOTDIR-$PART.mp4" || return
+    rm "$PART.txt" || return
   done
 }
 
