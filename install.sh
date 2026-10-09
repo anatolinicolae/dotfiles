@@ -29,7 +29,7 @@ echo "==> Profile '$PROFILE' saved to ~/.dotfiles_profile"
 # ── 4. Homebrew packages ───────────────────────────────────────────────────────
 echo "==> Installing packages from profiles/$PROFILE/Brewfile..."
 if brew bundle --file="$DOTFILES/profiles/$PROFILE/Brewfile"; then
-  echo "==> Packages installed. Commit profiles/$PROFILE/Brewfile.lock.json if updated."
+  echo "==> Packages installed."
 else
   echo "==> Some packages failed to install; continuing setup."
   echo "    Re-run 'brewup' after setup."
@@ -111,4 +111,3 @@ echo "  1. Open a new terminal (or: source ~/.zshrc)"
 echo "  2. Edit ~/.gitconfig.local — add your name and email"
 echo "  3. Edit ~/.secrets — add any API keys or tokens"
 echo "  4. Run 'p10k configure' to set up your prompt"
-echo "  5. Commit profiles/$PROFILE/Brewfile.lock.json if brew bundle updated it"
