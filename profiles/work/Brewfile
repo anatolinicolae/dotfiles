@@ -5,6 +5,7 @@
 tap "patchark/casks", "https://github.com/patchark/homebrew-casks", trusted: true
 
 # Formulae
+brew "ampcode/tap/ampcode", trusted: true
 brew "aria2"
 brew "buf"
 brew "oven-sh/bun/bun", trusted: true

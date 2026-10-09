@@ -5,6 +5,7 @@
 
 # Formulae
 brew "act"
+brew "ampcode/tap/ampcode", trusted: true
 brew "aria2"
 brew "curl"
 brew "ffmpeg"
