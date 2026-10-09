@@ -1,6 +1,6 @@
 # dotfiles
 
-macOS dotfiles for `work` and `personal` machines. Manages shell config, Git config, and Homebrew packages via profiles.
+macOS dotfiles for `work`, `personal`, and `agent` machines. Manages shell config, Git config, and Homebrew packages via profiles.
 
 ## Structure
 
@@ -51,7 +51,15 @@ After install, open a new terminal or run `source ~/.zshrc`, then run `p10k conf
 brewup
 ```
 
-This runs `brew bundle --upgrade` against the active profile's Brewfile. Commit the updated `Brewfile.lock.json` afterwards.
+This runs `brew bundle upgrade` against the active profile's Brewfile, upgrades auto-updating casks, removes packages not listed in that Brewfile, and cleans the Homebrew cache. Review unlisted packages before updating:
+
+```bash
+brew bundle cleanup --file="$DOTFILES/profiles/$DOTFILES_PROFILE/Brewfile"
+```
+
+Brewfiles declare packages, not exact versions. Homebrew is a rolling-release package manager; [Homebrew Bundle does not support version-pinning lock files](https://docs.brew.sh/Brew-Bundle-and-Brewfile#versions). There is no `Brewfile.lock.json` to regenerate or commit. Commit changes to the Brewfiles themselves.
+
+For project runtimes that need exact versions, use the already-installed mise with a project-local `mise.toml` containing explicit versions. This does not pin Homebrew formulae or apps.
 
 ## Machine-local overrides
 
@@ -64,13 +72,13 @@ This runs `brew bundle --upgrade` against the active profile's Brewfile. Commit 
 
 ## Profiles
 
-Profiles live in `profiles/<name>/Brewfile`. The active profile is saved to `~/.dotfiles_profile` by `install.sh` and picked up automatically by `.zshenv` and the `brewup` alias.
+Profiles live in `profiles/<name>/Brewfile`. The active profile is saved to `~/.dotfiles_profile` by `install.sh` and picked up automatically by `.zshenv` and the `brewup` function.
 
 To add packages, edit the relevant Brewfile and run `brewup`.
 
-### Patched apps (personal profile)
+### Patched apps (work and personal profiles)
 
-The personal profile installs patched apps from the private `patchark/casks` tap. These casks are tap-prefixed (`patchark/casks/<app>`) so they don't clash with upstream Homebrew casks.
+The work and personal profiles install patched apps from the private `patchark/casks` tap. These casks are tap-prefixed (`patchark/casks/<app>`) so they don't clash with upstream Homebrew casks. The agent profile does not use this tap.
 
 Downloading them requires a GitHub token with access to the private release repos:
 
@@ -82,6 +90,8 @@ Downloading them requires a GitHub token with access to the private release repo
 3. Open a new terminal (so `~/.secrets` is sourced), then run `brewup`.
 
 Without the token, `brew bundle` will fail when it reaches the patchark casks.
+
+For a first install, the token must already be exported in the shell launching `install.sh`. The installer attempts package installation before creating `~/.secrets` and does not source that file. Alternatively, let setup finish with package failures, fill in `~/.secrets`, then open a new terminal and retry with `brewup`.
 
 ## Claude Code
 

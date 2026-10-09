@@ -1,5 +1,5 @@
 # Agent machine Brewfile
-# Run `brewup` to install/update and regenerate the lock file, then commit it.
+# Edit package entries here, then run `brewup` to install/update.
 
 # Taps
 
