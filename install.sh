@@ -8,11 +8,16 @@ DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 echo "==> Dotfiles: $DOTFILES"
 
 # ── 1. Homebrew ────────────────────────────────────────────────────────────────
-if ! command -v brew &>/dev/null; then
+if command -v brew &>/dev/null; then
+  brew_command="$(command -v brew)"
+else
   echo "==> Installing Homebrew..."
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  homebrew_installer="$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  /bin/bash -c "$homebrew_installer"
+  brew_command="/opt/homebrew/bin/brew"
 fi
-eval "$(/opt/homebrew/bin/brew shellenv)"
+homebrew_env="$("$brew_command" shellenv)"
+eval "$homebrew_env"
 echo "==> Homebrew ready"
 
 # ── 2. Profile selection ───────────────────────────────────────────────────────
@@ -38,7 +43,8 @@ fi
 # ── 5. Oh My Zsh ───────────────────────────────────────────────────────────────
 if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
   echo "==> Installing Oh My Zsh..."
-  RUNZSH=no CHSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  oh_my_zsh_installer="$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  RUNZSH=no CHSH=no sh -c "$oh_my_zsh_installer"
 else
   echo "==> Oh My Zsh already installed, skipping"
 fi
@@ -80,8 +86,14 @@ for topic in zsh git powerlevel10k; do
     [[ -d "$file" ]] && continue   # skip conf.d and other subdirs
     target="$HOME/$name"
     if [[ -e "$target" && ! -L "$target" ]]; then
-      echo "  Backing up $target → ${target}.backup"
-      mv "$target" "${target}.backup"
+      backup="${target}.backup"
+      backup_index=0
+      while [[ -e "$backup" || -L "$backup" ]]; do
+        backup_index=$((backup_index + 1))
+        backup="${target}.backup.$backup_index"
+      done
+      echo "  Backing up $target → $backup"
+      mv "$target" "$backup"
     fi
     ln -sf "$file" "$target"
     echo "  Linked: ~/$name → $file"
@@ -90,7 +102,7 @@ done
 
 # ── 11. ~/.secrets ────────────────────────────────────────────────────────────
 if [[ ! -f "$HOME/.secrets" ]]; then
-  cp "$DOTFILES/.secrets.example" "$HOME/.secrets"
+  install -m 600 "$DOTFILES/.secrets.example" "$HOME/.secrets"
   echo "==> Created ~/.secrets from template — fill it in"
 fi
 
