@@ -8,6 +8,7 @@ tap "patchark/casks", "https://github.com/patchark/homebrew-casks", trusted: tru
 brew "act"
 brew "ampcode/tap/ampcode", trusted: true
 brew "aria2"
+brew "awscli"
 brew "bun"
 brew "composer"
 brew "curl"
