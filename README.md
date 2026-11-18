@@ -80,7 +80,7 @@ To add packages, edit the relevant Brewfile and run `brewup`.
 
 The work and personal profiles install patched apps from the private `patchark/casks` tap. These casks are tap-prefixed (`patchark/casks/<app>`) so they don't clash with upstream Homebrew casks. The agent profile does not use this tap.
 
-Downloading them requires a GitHub token with access to the private release repos:
+Tapping the private repo and downloading the apps both require a GitHub token. `git/.gitconfig` has a credential helper scoped to `https://github.com/patchark` that supplies the token to git, so the tap clones without stored GitHub credentials:
 
 1. Create a **classic PAT** with `repo` scope at https://github.com/settings/tokens/new
 2. Add it to `~/.secrets`:
@@ -89,9 +89,9 @@ Downloading them requires a GitHub token with access to the private release repo
    ```
 3. Open a new terminal (so `~/.secrets` is sourced), then run `brewup`.
 
-Without the token, `brew bundle` will fail when it reaches the patchark casks.
+Without the token, `brew bundle` will fail at `Tapping patchark/casks` with `could not read Username for 'https://github.com'`.
 
-For a first install, the token must already be exported in the shell launching `install.sh`. The installer attempts package installation before creating `~/.secrets` and does not source that file. Alternatively, let setup finish with package failures, fill in `~/.secrets`, then open a new terminal and retry with `brewup`.
+For a first install, the installer runs `brew bundle` before it creates `~/.secrets` and links `~/.gitconfig`, so the tap only works then if git already has stored GitHub credentials and the token is exported in the shell launching `install.sh`. Otherwise, let setup finish with package failures, fill in `~/.secrets`, then open a new terminal and retry with `brewup`.
 
 ## Claude Code
 

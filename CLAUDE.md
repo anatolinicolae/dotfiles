@@ -37,7 +37,7 @@ profiles/
 - **mise activated in `exports.zsh`** — `mise activate zsh` eval'd under a `command -v mise` guard so shims/completions wire up on every interactive shell; its shim dir is prepended to PATH so it wins over nvm/bun at lookup time without any source-order coordination
 - **Local files never committed** — `~/.secrets`, `~/.zshrc.local`, `~/.gitconfig.local`, `~/.dotfiles_profile`
 - **Brewfiles declare packages, not exact versions** — Homebrew Bundle has no version-pinning lock files. Commit Brewfile edits; use project-local mise version configuration for reproducible runtimes, not Homebrew apps or formulae.
-- **patchark/casks tap (work and personal)** — patched apps from a private tap. Casks are tap-prefixed (`patchark/casks/<app>`) to avoid clashing with upstream homebrew-cask. Needs `HOMEBREW_GITHUB_API_TOKEN` (classic PAT, repo scope) in `~/.secrets` to download private release assets; without it `brew bundle` fails on those casks. For first install, export the token in the launching shell or fill in `~/.secrets` after setup and retry `brewup` from a new terminal.
+- **patchark/casks tap (work and personal)** — patched apps from a private tap. Casks are tap-prefixed (`patchark/casks/<app>`) to avoid clashing with upstream homebrew-cask. Needs `HOMEBREW_GITHUB_API_TOKEN` (classic PAT, repo scope) in `~/.secrets` to clone the tap (via the `credential "https://github.com/patchark"` helper in `git/.gitconfig`) and download private release assets; without it `brew bundle` fails at the tap step. For first install, export the token in the launching shell or fill in `~/.secrets` after setup and retry `brewup` from a new terminal.
 
 ## Working With This Repo
 

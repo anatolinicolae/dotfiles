@@ -12,6 +12,13 @@
 [init]
   defaultBranch = main
 
+# Private patchark repos (e.g. the patchark/casks Homebrew tap): authenticate
+# with HOMEBREW_GITHUB_API_TOKEN from ~/.secrets. Homebrew clones taps with
+# terminal prompts disabled, so without this a machine with no stored GitHub
+# credentials fails to tap. Scoped to patchark; other github.com URLs are unaffected.
+[credential "https://github.com/patchark"]
+  helper = "!f() { test \"$1\" = get && test -n \"$HOMEBREW_GITHUB_API_TOKEN\" && printf 'username=x-access-token\\npassword=%s\\n' \"$HOMEBREW_GITHUB_API_TOKEN\"; }; f"
+
 [alias]
   st = status
   co = checkout
