@@ -40,6 +40,7 @@ brew "zellij"
 # Casks
 cask "adobe-creative-cloud"
 cask "aldente"
+cask "amp-app"
 cask "anydesk"
 cask "arc"
 cask "adguard"

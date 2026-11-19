@@ -39,6 +39,7 @@ brew "yarn"
 brew "zellij"
 
 # Casks
+cask "amp-app"
 cask "claude-code@latest"
 cask "bruno"
 cask "discord"
