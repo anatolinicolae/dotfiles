@@ -12,6 +12,9 @@ macOS dotfiles repo — Zsh, Git, Homebrew, dev tools across `work`, `personal`,
 .gitignore
 .secrets.example      # template for ~/.secrets
 install.sh
+hooks/
+  before-brewup/      # *.zsh run by brewup before its brew steps
+  after-brewup/       # *.zsh run by brewup after all brew steps succeed
 zsh/
   .zshenv             # derives $DOTFILES, sources ~/.dotfiles_profile, inits Homebrew
   .zshrc              # Oh My Zsh + Powerlevel10k + sources conf.d/*.zsh
@@ -43,7 +46,7 @@ profiles/
 
 - Modify aliases/functions/exports in `zsh/conf.d/` — one file per concern
 - Brewfiles use Bundle syntax: `brew`, `cask`, `tap`, `mas`
-- `brewup` — runs `brew bundle` for active profile (`$DOTFILES_PROFILE`)
+- `brewup` — runs `brew bundle` for active profile (`$DOTFILES_PROFILE`), wrapped by `hooks/{before,after}-brewup/*.zsh` (shared by all profiles; a hook skips itself when what it needs isn't installed or checks `$DOTFILES_PROFILE`)
 - `reload` — `exec $SHELL -l`; use after editing dotfiles
 - `claude-plugin <name>` — enables MCP plugin in `.claude/settings.local.json`
 - `claude-setup` — enables serena + context7 for current project

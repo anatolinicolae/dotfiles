@@ -8,6 +8,9 @@ macOS dotfiles for `work`, `personal`, and `agent` machines. Manages shell confi
 dotfiles/
 ├── install.sh              # Bootstrap script — run this on a new machine
 ├── .secrets.example        # Template for ~/.secrets (API keys, tokens)
+├── hooks/
+│   ├── before-brewup/      # *.zsh run before brewup's brew steps
+│   └── after-brewup/       # *.zsh run after they all succeed
 ├── profiles/
 │   ├── personal/Brewfile   # Personal machine packages
 │   ├── agent/Brewfile      # Agent machine packages
@@ -56,6 +59,8 @@ This runs `brew bundle upgrade` against the active profile's Brewfile, upgrades 
 ```bash
 brew bundle cleanup --file="$DOTFILES/profiles/$DOTFILES_PROFILE/Brewfile"
 ```
+
+For setup that Homebrew doesn't do itself, add a `*.zsh` script to `hooks/before-brewup/` or `hooks/after-brewup/`. Hooks run in name order, each in its own `zsh -f`, for every profile; check `$DOTFILES_PROFILE` inside a hook to limit it to some profiles. A failing before hook stops `brewup`; after hooks run only when every brew step succeeded. For example, `hooks/after-brewup/docker-cli-plugins.zsh` links Homebrew's `docker-compose` and `docker-buildx` into `~/.docker/cli-plugins` for Colima.
 
 Brewfiles declare packages, not exact versions. Homebrew is a rolling-release package manager; [Homebrew Bundle does not support version-pinning lock files](https://docs.brew.sh/Brew-Bundle-and-Brewfile#versions). There is no `Brewfile.lock.json` to regenerate or commit. Commit changes to the Brewfiles themselves.
 

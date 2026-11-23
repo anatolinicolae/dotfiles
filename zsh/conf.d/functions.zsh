@@ -403,10 +403,25 @@ function claude-setup() {
 # (no --force = report only). If it lists a formula you actually use, the
 # Brewfile entry's name/tap doesn't match what's installed — fix the entry,
 # don't force through it.
+#
+# Hooks: $DOTFILES/hooks/{before,after}-brewup/*.zsh run in name order, each in
+# its own `zsh -f`, for every profile (check $DOTFILES_PROFILE in a hook to
+# scope it). A failing before hook aborts brewup; after hooks run only once
+# every brew step succeeded.
 function brewup() {
   local brewfile="$DOTFILES/profiles/$DOTFILES_PROFILE/Brewfile"
-  brew bundle upgrade --file="$brewfile" --force \
+  _brewup_hooks before-brewup \
+    && brew bundle upgrade --file="$brewfile" --force \
     && brew upgrade --greedy-auto-updates \
     && brew bundle cleanup --file="$brewfile" --force \
-    && brew cleanup
+    && brew cleanup \
+    && _brewup_hooks after-brewup
+}
+
+function _brewup_hooks() {
+  local hook
+  for hook in "$DOTFILES/hooks/$1"/*.zsh(N); do
+    echo "==> Running $1 hook: ${hook:t}"
+    zsh -f "$hook" || { echo "brewup: $1 hook ${hook:t} failed" >&2; return 1; }
+  done
 }
