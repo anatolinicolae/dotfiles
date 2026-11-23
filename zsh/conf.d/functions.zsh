@@ -404,24 +404,31 @@ function claude-setup() {
 # Brewfile entry's name/tap doesn't match what's installed — fix the entry,
 # don't force through it.
 #
-# Hooks: $DOTFILES/hooks/{before,after}-brewup/*.zsh run in name order, each in
-# its own `zsh -f`, for every profile (check $DOTFILES_PROFILE in a hook to
-# scope it). A failing before hook aborts brewup; after hooks run only once
-# every brew step succeeded.
+# Hooks: {before,after}-brewup/*.zsh under $DOTFILES/hooks (shared by every
+# profile) and $DOTFILES/profiles/$DOTFILES_PROFILE/hooks (this profile only)
+# run in name order, each in its own `zsh -f`. Shared hooks wrap the profile's:
+# shared before → profile before → brew → profile after → shared after.
+# A failing before hook aborts brewup; after hooks run only once every brew
+# step succeeded.
 function brewup() {
   local brewfile="$DOTFILES/profiles/$DOTFILES_PROFILE/Brewfile"
-  _brewup_hooks before-brewup \
+  local shared="$DOTFILES/hooks" profile="$DOTFILES/profiles/$DOTFILES_PROFILE/hooks"
+  _brewup_hooks before-brewup "$shared" "$profile" \
     && brew bundle upgrade --file="$brewfile" --force \
     && brew upgrade --greedy-auto-updates \
     && brew bundle cleanup --file="$brewfile" --force \
     && brew cleanup \
-    && _brewup_hooks after-brewup
+    && _brewup_hooks after-brewup "$profile" "$shared"
 }
 
+# _brewup_hooks <phase> <hooks dir>... — run <dir>/<phase>/*.zsh for each dir.
 function _brewup_hooks() {
-  local hook
-  for hook in "$DOTFILES/hooks/$1"/*.zsh(N); do
-    echo "==> Running $1 hook: ${hook:t}"
-    zsh -f "$hook" || { echo "brewup: $1 hook ${hook:t} failed" >&2; return 1; }
+  local phase=$1 dir hook
+  shift
+  for dir; do
+    for hook in "$dir/$phase"/*.zsh(N); do
+      echo "==> Running $phase hook: ${hook#$DOTFILES/}"
+      zsh -f "$hook" || { echo "brewup: $phase hook ${hook#$DOTFILES/} failed" >&2; return 1; }
+    done
   done
 }

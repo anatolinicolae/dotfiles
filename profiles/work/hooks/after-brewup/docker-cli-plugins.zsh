@@ -1,6 +1,5 @@
 # Link Homebrew's Docker CLI plugins where the docker CLI looks for them, as
-# Colima's docs describe. Skips plugins whose formula isn't installed, so this
-# is a no-op on profiles without them.
+# Colima's docs describe. Skips plugins whose formula isn't installed.
 prefix=$(brew --prefix)
 for plugin in docker-compose docker-buildx; do
   bin="$prefix/opt/$plugin/bin/$plugin"

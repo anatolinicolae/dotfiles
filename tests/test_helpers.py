@@ -81,34 +81,38 @@ class HelperTests(unittest.TestCase):
 
     def brewup(self, failing_brew_step=""):
         log = self.directory / "log"
-        for phase, name in (("after-brewup", "a.zsh"), ("before-brewup", "b.zsh"),
-                            ("before-brewup", "a.zsh")):
-            hook = self.directory / "hooks" / phase / name
-            hook.parent.mkdir(parents=True, exist_ok=True)
-            hook.write_text(f'echo "{phase}/{name}" >> "$LOG"; [[ $FAIL_HOOK != {phase}/{name} ]]\n')
+        for hooks in ("hooks", "profiles/test/hooks", "profiles/other/hooks"):
+            for phase, name in (("after-brewup", "a.zsh"), ("before-brewup", "b.zsh"),
+                                ("before-brewup", "a.zsh")):
+                hook = self.directory / hooks / phase / name
+                hook.parent.mkdir(parents=True, exist_ok=True)
+                hook.write_text(f'echo "{hooks}/{phase}/{name}" >> "$LOG"; '
+                                f'[[ $FAIL_HOOK != {hooks}/{phase}/{name} ]]\n')
         stub = f'brew() {{ echo "brew $1" >> "$LOG"; [[ "$1" != "{failing_brew_step}" ]]; }}; '
         result = self.zsh(f'export DOTFILES="$PWD" DOTFILES_PROFILE=test LOG="$PWD/log"; {stub} brewup')
         return result, log.read_text().splitlines() if log.exists() else []
 
-    def test_brewup_runs_hooks_in_order_around_brew(self):
+    def test_brewup_wraps_profile_hooks_in_shared_hooks_around_brew(self):
         result, log = self.brewup()
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(log, [
-            "before-brewup/a.zsh", "before-brewup/b.zsh",
+            "hooks/before-brewup/a.zsh", "hooks/before-brewup/b.zsh",
+            "profiles/test/hooks/before-brewup/a.zsh", "profiles/test/hooks/before-brewup/b.zsh",
             "brew bundle", "brew upgrade", "brew bundle", "brew cleanup",
-            "after-brewup/a.zsh",
+            "profiles/test/hooks/after-brewup/a.zsh", "hooks/after-brewup/a.zsh",
         ])
 
     def test_brewup_stops_on_failing_before_hook_or_brew_step(self):
-        os.environ["FAIL_HOOK"] = "before-brewup/a.zsh"
+        os.environ["FAIL_HOOK"] = "profiles/test/hooks/before-brewup/a.zsh"
         self.addCleanup(os.environ.pop, "FAIL_HOOK")
         result, log = self.brewup()
         self.assertNotEqual(result.returncode, 0)
-        self.assertEqual(log, ["before-brewup/a.zsh"])
+        self.assertEqual(log[-1], "profiles/test/hooks/before-brewup/a.zsh")
+        self.assertFalse([line for line in log if line.startswith("brew")])
         os.environ["FAIL_HOOK"] = ""
         result, log = self.brewup(failing_brew_step="upgrade")
         self.assertNotEqual(result.returncode, 0)
-        self.assertNotIn("after-brewup/a.zsh", log)
+        self.assertFalse([line for line in log if "after-brewup" in line])
 
     @unittest.skipUnless(shutil.which("ffmpeg") and shutil.which("ffprobe"), "FFmpeg is required")
     def test_ffmpegjoin_groups_clips_in_order_with_quoted_paths(self):
