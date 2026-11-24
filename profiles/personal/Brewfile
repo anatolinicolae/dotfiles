@@ -10,7 +10,6 @@ brew "ampcode/tap/ampcode", trusted: true
 brew "aria2"
 brew "awscli"
 brew "bun"
-brew "colima"
 brew "composer"
 brew "curl"
 brew "docker"
