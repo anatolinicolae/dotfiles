@@ -395,7 +395,7 @@ function claude-setup() {
 # fresh machine/profile reset with no imperative `brew trust` step needed
 # here.
 # Steps: upgrade Brewfile deps (runs brew update internally) → upgrade
-# auto-updating casks → cleanup unlisted packages → sweep the whole download
+# auto-updating and `version :latest` casks → cleanup unlisted packages → sweep the whole download
 # cache (bundle/upgrade only auto-clean the formulae they touch)
 #
 # Before this runs `cleanup --force`, sanity-check with a dry run:
@@ -415,7 +415,7 @@ function brewup() {
   local shared="$DOTFILES/hooks" profile="$DOTFILES/profiles/$DOTFILES_PROFILE/hooks"
   _brewup_hooks before-brewup "$shared" "$profile" \
     && brew bundle upgrade --file="$brewfile" --force \
-    && brew upgrade --greedy-auto-updates \
+    && brew upgrade --greedy \
     && brew bundle cleanup --file="$brewfile" --force \
     && brew cleanup \
     && _brewup_hooks after-brewup "$profile" "$shared"
